@@ -10,9 +10,17 @@
 
 typedef void (^TestViewblock)(NSString *string);
 
+typedef void(^SLblockString)(NSString *string);
+
+
 @interface BlockViewController : UIViewController
 
 @property(nonatomic,strong)TestViewblock testViewBlock;
+@property (nonatomic,copy) SLblockString blockstring;
+
+
+
+@property(nonatomic, copy) UIView *(^viewGetter)(NSString *imageName); //注意其返回类型为UIView *
 
 
 @end

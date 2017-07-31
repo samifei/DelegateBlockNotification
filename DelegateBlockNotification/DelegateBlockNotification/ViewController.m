@@ -27,7 +27,18 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - block
+#pragma mark - Delegate
+- (IBAction)buttonClick:(id)sender {
+    DelegateViewController *vc = [[DelegateViewController alloc]init];
+    vc.testViewDelegate = self;
+    [self presentViewController:vc animated:YES completion:nil];
+}
+-(void)selectedString:(NSString *)string{
+    [self dismissViewControllerAnimated:YES completion:nil];//返回上个页面
+    NSLog(@"string --->%@",string);
+}
+
+#pragma mark - Block
 - (IBAction)BlockClick:(id)sender {
     BlockViewController *vc = [[BlockViewController alloc]init];
     [self presentViewController:vc animated:YES completion:nil];
@@ -35,8 +46,30 @@
     __weak typeof(self) weakSelf=self;//避免block 循环缓存
     vc.testViewBlock=^(NSString *string){
         [weakSelf dismissViewControllerAnimated:YES completion:nil];
-        NSLog(@"string-->%@",string);
+        NSLog(@"string --->%@",string);
     };
+    
+    
+    
+    //MARK: 而外的测试
+    vc.viewGetter = ^(NSString *imageName){
+//        return [[UIView alloc] init]; //特别注意此处，若对象不匹配，则会报错，设置为nil也会报错。
+        NSLog(@"samli --%@",imageName);
+        return [self currentView];
+    };
+    vc.viewGetter(@"hello"); //实际执行block
+    
+    return ;
+    vc.blockstring = ^(NSString *string){
+        NSLog(@"%@",string);
+    };
+
+    
+}
+- (UIView *)currentView
+{
+    NSLog(@"设置返回值对象，一定要匹配");
+    return nil;
 }
 
 #pragma mark - Notification
@@ -51,17 +84,6 @@
     NSString *sting = [notification object];
     NSLog(@"sting --->%@",sting);
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-#pragma mark - Delegate
-- (IBAction)buttonClick:(id)sender {
-    DelegateViewController *vc = [[DelegateViewController alloc]init];
-    vc.testViewDelegate = self;
-    [self presentViewController:vc animated:YES completion:nil];
-}
--(void)selectedString:(NSString *)string{
-    [self dismissViewControllerAnimated:YES completion:nil];//返回上个页面
-    NSLog(@"string-- >%@",string);
 }
 
 @end

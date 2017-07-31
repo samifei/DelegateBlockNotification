@@ -17,13 +17,21 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+//    self.viewGetter = <#^UIView *(NSString *imageName)#>
+    
 }
 
 - (IBAction)back:(id)sender {
     if (_testViewBlock) {
         _testViewBlock(@"T - T - Block");
     }
+    
+    return;
+    self.blockstring([NSString stringWithFormat:@"block"]);
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
+
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
